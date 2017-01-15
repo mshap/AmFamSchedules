@@ -1,0 +1,20 @@
+{
+  "api": {
+    "host": "ws.motionvibe.com",
+    "path": "/ScheduleLoaderService.asmx/GetNetworkSchedule"
+  },
+  "locations": {
+    "Midlothian": 80,
+    "Chester": 81,
+    "Colonial Heights": 82,
+    "Fredericksburg": 83,
+    "Mechanicsville": 84,
+    "Swift Creek": 85,
+    "Short Pump": 86,
+    "Williamsburg": 87,
+    "Virginia Center Commons": 88
+  },
+  "classTypes": {
+    "Power": 6404
+  }
+}
