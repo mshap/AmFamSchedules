@@ -1,0 +1,38 @@
+{
+  "intents": [
+    {
+      "intent": "GetAllSchedulesToday"
+    },
+    {
+      "intent": "GetAllSchedules",
+      "slots": [
+        {
+          "name": "Date",
+          "type": "AMAZON.DATE"
+        }
+      ]
+    },
+    {
+      "intent": "GetSchedulesLocationToday",
+      "slots": [
+        {
+          "name": "Gym",
+          "type": "LIST_OF_GYMS"
+        }
+      ]
+    },
+    {
+      "intent": "GetSchedulesLocation",
+      "slots": [
+        {
+          "name": "Gym",
+          "type": "LIST_OF_GYMS"
+        },
+        {
+          "name": "Date",
+          "type": "AMAZON.DATE"
+        }
+      ]
+    }
+  ]
+}

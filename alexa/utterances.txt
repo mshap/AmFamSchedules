@@ -1,0 +1,4 @@
+GetAllSchedulesToday to get todays schedule
+GetAllSchedules to get schedules on {Date}
+GetSchedulesLocationToday to get today's schedule at {Gym}
+GetSchedulesLocation to get schedules at {Gym} on {Date}

@@ -1,0 +1,13 @@
+LIST_OF_GYMS=
+Midlothian
+Chester
+Colonial Heights
+Fredericksburg
+Mechanicsville
+Swift Creek
+Short Pump
+Williamsburg
+Virginia Center Commons
+
+LIST_OF_CLASSES=
+Power
