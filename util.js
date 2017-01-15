@@ -68,13 +68,13 @@ module.exports = {
   getClasses: getClassJSON,
   getLocationId:
     function(locationName) {
-      return config.locations[locationName];
+      return config.locations[locationName.toLowerCase()];
     },
   getLocations:
     function() { return config.locations; },
   getClassTypeId:
     function(className) {
-      return config.classTypes[className];
+      return config.classTypes[className.toLowerCase()];
     },
   getAPIOptions:
     function(data) {

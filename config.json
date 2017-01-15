@@ -4,17 +4,17 @@
     "path": "/ScheduleLoaderService.asmx/GetNetworkSchedule"
   },
   "locations": {
-    "Midlothian": 80,
-    "Chester": 81,
-    "Colonial Heights": 82,
-    "Fredericksburg": 83,
-    "Mechanicsville": 84,
-    "Swift Creek": 85,
-    "Short Pump": 86,
-    "Williamsburg": 87,
-    "Virginia Center Commons": 88
+    "midlothian": 80,
+    "chester": 81,
+    "colonial heights": 82,
+    "fredericksburg": 83,
+    "mechanicsville": 84,
+    "swift creek": 85,
+    "short pump": 86,
+    "williamsburg": 87,
+    "virginia center commons": 88
   },
   "classTypes": {
-    "Power": 6404
+    "power": 6404
   }
 }
