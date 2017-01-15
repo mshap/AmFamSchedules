@@ -6,4 +6,6 @@ var location = process.argv[4];
 
 api.getSchedules(location, day, classType).then(function(classes) {
   console.log(classes)
+},function(error) {
+  console.log(error)
 });

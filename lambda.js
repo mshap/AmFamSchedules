@@ -59,8 +59,8 @@ function onLaunch(launchRequest, session, callback) {
     console.log("onLaunch requestId=" + launchRequest.requestId
         + ", sessionId=" + session.sessionId);
 
-    var cardTitle = "Hello, World!"
-    var speechOutput = "You can tell Hello, World! to say Hello, World!"
+    var cardTitle = "Schedule Help"
+    var speechOutput = "You can ask things like: 'to get today\'s schedule'. 'to get get schedules at Midlothian'.  'to get schedules on Friday'."
     callback(session.attributes,
         buildSpeechletResponse(cardTitle, speechOutput, "", true));
 }
@@ -94,6 +94,10 @@ function onIntent(intentRequest, session, callback) {
         api.getSchedules(location, day, classType).then(function(classes) {
             callback(session.attributes,
                 buildSpeechletResponse("Schedules", processClassList(day, classType, classes), "", "true"));
+        }, function(error) {
+            var msg = "I'm sorry, you did not specify a valid " + error.field + ".  Please try again.";
+            callback(session.attributes,
+                buildSpeechletResponse("Schedules", msg, "", "true"));
         });
     }
     else {
@@ -150,11 +154,6 @@ function onSessionEnded(sessionEndedRequest, session) {
         + ", sessionId=" + session.sessionId);
 
     // Add any cleanup logic here
-}
-
-function handleTestRequest(intent, session, callback) {
-    callback(session.attributes,
-        buildSpeechletResponseWithoutCard("Hello, World!", "", "true"));
 }
 
 // ------- Helper functions to build responses -------

@@ -94,7 +94,22 @@ var getSchedules = function(location, day, classType) {
       masterList.sort(utils.sort)
 
       resolve(masterList);
-    }).catch( function(error) {console.log(error)});
+    }).catch( function(error) {
+      console.log(error);
+
+      var resp = {};
+      resp.failed = true;
+
+      if (utils.getLocationId(location) == undefined) {
+        resp.field = "location";
+      } else if (utils.getClassTypeId(classType) == undefined) {
+        resp.field = "class";
+      } else if (day == undefined) {
+        resp.field = "day";
+      }
+
+      reject(resp);
+    });
   });
 }
 
