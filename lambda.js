@@ -93,7 +93,7 @@ function onIntent(intentRequest, session, callback) {
         console.log("Day: " + day + " Location: " + location)
         api.getSchedules(location, day, classType).then(function(classes) {
             callback(session.attributes,
-                buildSpeechletResponse("American Family Schedules", processClassList(day, classType, classes), "", "true"));
+                buildSpeechletResponse("Schedules", processClassList(day, classType, classes), "", "true"));
         });
     }
     else {
@@ -168,7 +168,7 @@ function buildSpeechletResponse(title, output, repromptText, shouldEndSession) {
         card: {
             type: "Simple",
             title: title,
-            content: output
+            content: output.replace(/\. /g, "<br>")
         },
         reprompt: {
             outputSpeech: {
