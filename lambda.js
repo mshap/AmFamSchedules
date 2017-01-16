@@ -72,38 +72,43 @@ function onIntent(intentRequest, session, callback) {
     console.log("onIntent requestId=" + intentRequest.requestId
         + ", sessionId=" + session.sessionId);
 
-    var intent = intentRequest.intent,
-        intentName = intentRequest.intent.name;
+    var theCall = getCallPromise(intentRequest.intent);
+    var msg;
 
-    // dispatch custom intents to handlers here
-    if (intentName.startsWith("Get")) {
-        var day, location, classType;
+    theCall.then(function(classes) {
+        msg = processClassList(day, classType, classes);
+    }, function(error) {
+        msg = "I'm sorry, you did not specify a valid " + error.field + ".  Please try again.";
 
-        if(intentName == "GetAllSchedules" || intentName == "GetSchedulesLocation") {
-            day = intent.slots.Date.value;
-        } else {
-            day = getToday();
-        }
+    });
 
-        if (intentName == "GetSchedulesLocationToday" || intentName == "GetSchedulesLocation") {
-            location = intent.slots.Gym.value;
-        }
+    callback(session.attributes,
+        buildSpeechletResponse("Schedules", msg, "", "true"));
+}
 
-        classType = "Power";
-        console.log("Day: " + day + " Location: " + location)
-        api.getSchedules(location, day, classType).then(function(classes) {
-            callback(session.attributes,
-                buildSpeechletResponse("Schedules", processClassList(day, classType, classes), "", "true"));
-        }, function(error) {
-            var msg = "I'm sorry, you did not specify a valid " + error.field + ".  Please try again.";
-            callback(session.attributes,
-                buildSpeechletResponse("Schedules", msg, "", "true"));
-        });
-    }
-    else {
-        console.log(intent);
-        throw "Invalid intent";
-    }
+function getCallPromise(intent) {
+  var intentName = intent.name,
+      theCall = null,
+      STATIC_CLASS = "Power";
+
+  switch (intentName) {
+    case "GetAllSchedulesToday":
+      theCall = api.getTodaysSchedules(STATIC_CLASS);
+      break;
+    case "GetSchedulesLocationToday":
+      theCall = api.getTodaysScheduleByLocation(STATIC_CLASS, intent.slots.Gym.value);
+      break;
+    case "GetAllSchedules":
+      theCall = api.getAllSchedules(intent.slots.Date.value, STATIC_CLASS);
+      break;
+    case "GetSchedulesLocation":
+      theCall = api.getScheduleByLocation(intent.slots.Date.value, STATIC_CLASS, intent.slots.Gym.value);
+    default:
+      console.log(intent);
+      throw "Invalid intent";
+  }
+
+  return theCall;
 }
 
 function processClassList(day, className, classes) {
@@ -125,23 +130,6 @@ function processClassList(day, className, classes) {
     }
 
     return buffer;
-}
-
-function getToday() {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth()+1; //January is 0!
-    var yyyy = today.getFullYear();
-
-    if(dd<10) {
-        dd='0'+dd
-    }
-
-    if(mm<10) {
-        mm='0'+mm
-    }
-
-    return mm+'/'+dd+'/'+yyyy;
 }
 
 /**
@@ -167,22 +155,6 @@ function buildSpeechletResponse(title, output, repromptText, shouldEndSession) {
             type: "Simple",
             title: title,
             content: output.replace(/\. /g, "<br>")
-        },
-        reprompt: {
-            outputSpeech: {
-                type: "PlainText",
-                text: repromptText
-            }
-        },
-        shouldEndSession: shouldEndSession
-    };
-}
-
-function buildSpeechletResponseWithoutCard(output, repromptText, shouldEndSession) {
-    return {
-        outputSpeech: {
-            type: "PlainText",
-            text: output
         },
         reprompt: {
             outputSpeech: {
