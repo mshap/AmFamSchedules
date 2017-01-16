@@ -48,37 +48,48 @@ var getLocationData = function(query) {
     });
 }
 
-var getCallList = function(location, day, classType) {
+var getTodaysSchedules(classType) {
+  return getAllSchedules(utils.getToday(), classType);
+}
+
+var getTodaysScheduleByLocation(classType, location) {
+  return getScheduleByLocation(utils.getToday(), classType, location);
+}
+
+var getScheduleByLocation = function(day, classType, location) {
   var queries = [];
 
-  if (location != null) {
+  queries.push({
+      day: day,
+      location: location,
+      classType: classType
+    });
+
+    return getSchedules(queries);
+}
+
+var getAllSchedules = function(day, classType) {
+  var queries = [];
+
+  for (var loc in utils.getLocations()) {
     queries.push({
-        day: day,
-        location: location,
-        classType: classType
-      });
-  } else {
-    for (var loc in utils.getLocations()) {
-      queries.push({
-        day: day,
-        location: loc,
-        classType: classType
-      });
-    }
+      day: day,
+      location: loc,
+      classType: classType
+    });
   }
 
+  return getSchedules(queries);
+}
+
+var getSchedules = function(queries) {
   var calls = [];
 
   for (var x in queries) {
     calls.push(getLocationData(queries[x]));
   }
 
-  return calls;
-}
-
-var getSchedules = function(location, day, classType) {
   return new Promise(function(resolve, reject) {
-    var calls = getCallList(location, day, classType);
     var masterList = [];
 
     Promise.all(calls).then(function(list) {
@@ -114,5 +125,8 @@ var getSchedules = function(location, day, classType) {
 }
 
 module.exports = {
-  getSchedules: getSchedules
+  getScheduleByLocation: getScheduleByLocation,
+  getAllSchedules: getAllSchedules,
+  getTodaysSchedules: getTodaysSchedules,
+  getTodaysScheduleByLocation: getTodaysScheduleByLocation
 }

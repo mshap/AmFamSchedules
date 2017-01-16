@@ -142,7 +142,6 @@ function getToday() {
     }
 
     return mm+'/'+dd+'/'+yyyy;
-
 }
 
 /**
