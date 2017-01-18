@@ -59,10 +59,10 @@ function onLaunch(launchRequest, session, callback) {
     console.log("onLaunch requestId=" + launchRequest.requestId
         + ", sessionId=" + session.sessionId);
 
-    var cardTitle = "Schedule Help"
-    var speechOutput = "You can ask things like: 'to get today\'s schedule'. 'to get get schedules at Midlothian'.  'to get schedules on Friday'."
-    callback(session.attributes,
-        buildSpeechletResponse(cardTitle, speechOutput, "", true));
+      var cardTitle = "Schedule Help"
+      var speechOutput = "Welcome to amfanfit.  You can ask for schedules at locations, or for schedules on dates."
+      callback(session.attributes,
+           buildSpeechletResponse(cardTitle, speechOutput, "You can ask for schedules at locations, or for schedules on dates.", false));
 }
 
 /**
@@ -73,17 +73,19 @@ function onIntent(intentRequest, session, callback) {
         + ", sessionId=" + session.sessionId);
 
     var theCall = getCallPromise(intentRequest.intent);
-    var msg;
+    var msg, title;
 
     theCall.then(function(classes) {
         msg = processClassList(day, classType, classes);
+        title = "Schedules " + (intent.slots.Date.value != undefined ? "on " + intent.slots.Date.value : "for today");
     }, function(error) {
         msg = "I'm sorry, you did not specify a valid " + error.field + ".  Please try again.";
+        title = "Error getting Schedules";
 
     });
 
     callback(session.attributes,
-        buildSpeechletResponse("Schedules", msg, "", "true"));
+        buildSpeechletResponse(title, msg, "", "true"));
 }
 
 function getCallPromise(intent) {
@@ -144,17 +146,16 @@ function onSessionEnded(sessionEndedRequest, session) {
 }
 
 // ------- Helper functions to build responses -------
-
 function buildSpeechletResponse(title, output, repromptText, shouldEndSession) {
     return {
         outputSpeech: {
-            type: "PlainText",
-            text: output
+            type: "SSML",
+            ssml: "<speak>" + output.replace(/\. /g, ". <break time=\"1s\"/>") + "</speak>"
         },
         card: {
             type: "Simple",
             title: title,
-            content: output.replace(/\. /g, "<br>")
+            content: output
         },
         reprompt: {
             outputSpeech: {

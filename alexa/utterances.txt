@@ -1,4 +1,20 @@
-GetAllSchedulesToday to get todays schedule
-GetAllSchedules to get schedules on {Date}
+GetAllSchedulesToday to get today's schedule
+GetAllSchedulesToday for get today's schedule
+GetAllSchedulesToday what is today's schedule
+GetAllSchedulesToday to tell me today's schedule
+GetAllSchedulesToday to find the schedule for today
+GetAllSchedules to get the schedule on {Date}
+GetAllSchedules what is the schedule on {Date}
+GetAllSchedules for schedules on {Date}
+GetAllSchedules to tell me the schedule on {Date}
+GetAllSchedules to find the schedule on {Date}
 GetSchedulesLocationToday to get today's schedule at {Gym}
-GetSchedulesLocation to get schedules at {Gym} on {Date}
+GetSchedulesLocationToday for today's schedule at {Gym}
+GetSchedulesLocationToday what is today's schedule at {Gym}
+GetSchedulesLocationToday to tell me today's schedule at {Gym}
+GetSchedulesLocationToday to find schedule at {Gym} for today
+GetSchedulesLocation to get the schedule at {Gym} on {Date}
+GetSchedulesLocation for the schedule at {Gym} on {Date}
+GetSchedulesLocation what is the schedule at {Gym} on {Date}
+GetSchedulesLocation to tell me the schedule at {Gym} on {Date}
+GetSchedulesLocation to find the schedule at {Gym} on {Date}
