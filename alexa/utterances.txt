@@ -1,5 +1,5 @@
 GetAllSchedulesToday to get today's schedule
-GetAllSchedulesToday for get today's schedule
+GetAllSchedulesToday for today's schedule
 GetAllSchedulesToday what is today's schedule
 GetAllSchedulesToday to tell me today's schedule
 GetAllSchedulesToday to find the schedule for today

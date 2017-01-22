@@ -48,11 +48,11 @@ var getLocationData = function(query) {
     });
 }
 
-var getTodaysSchedules(classType) {
+var getTodaysSchedules = function(classType) {
   return getAllSchedules(utils.getToday(), classType);
 }
 
-var getTodaysScheduleByLocation(classType, location) {
+var getTodaysScheduleByLocation= function(classType, location) {
   return getScheduleByLocation(utils.getToday(), classType, location);
 }
 
@@ -111,11 +111,11 @@ var getSchedules = function(queries) {
       var resp = {};
       resp.failed = true;
 
-      if (utils.getLocationId(location) == undefined) {
+      if (utils.getLocationId(queries[0].location) === undefined) {
         resp.field = "location";
-      } else if (utils.getClassTypeId(classType) == undefined) {
+      } else if (utils.getClassTypeId(queries[0].classType) === undefined) {
         resp.field = "class";
-      } else if (day == undefined) {
+      } else if (queries[0].day === undefined) {
         resp.field = "day";
       }
 

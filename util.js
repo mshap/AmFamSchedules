@@ -82,6 +82,7 @@ var getToday = function() {
 
 module.exports = {
   sort: sort,
+  getToday: getToday,
   getClasses: getClassJSON,
   getLocationId:
     function(locationName) {

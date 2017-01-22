@@ -71,50 +71,80 @@ function onLaunch(launchRequest, session, callback) {
 function onIntent(intentRequest, session, callback) {
     console.log("onIntent requestId=" + intentRequest.requestId
         + ", sessionId=" + session.sessionId);
+    var intent = intentRequest.intent;
+    if (isAmazonIntent(intent.name)) {
+      var title, output, exit = true;
+      if ("AMAZON.HelpIntent" == intent.name) {
+        title = "Help";
+        output = "Ask 'for today's schedule at Gym Name' or 'what is the schedule for Thursday'";
+        exit = false;
+      } else {
+        title = "Goodbye";
+        output = "Thank you for using Amfanfit today";
+      }
+      callback(session.attributes,
+          buildSpeechletResponse(title, output, "", "" + exit));
+      return;
+    }
 
-    var theCall = getCallPromise(intentRequest.intent);
-    var msg, title;
+    var date = (intent.slots !== undefined && intent.slots.Date !== undefined ? "on " + intent.slots.Date.value : "for today");
+    var className = "Power";
 
-    theCall.then(function(classes) {
-        msg = processClassList(day, classType, classes);
-        title = "Schedules " + (intent.slots.Date.value != undefined ? "on " + intent.slots.Date.value : "for today");
+    getCallPromise(intent).then(function(classes) {
+        var msg = processClassList(date, className, classes);
+        var title = "Schedules " + date;
+
+        callback(session.attributes,
+            buildSpeechletResponse(title, msg, "", "true"));
     }, function(error) {
-        msg = "I'm sorry, you did not specify a valid " + error.field + ".  Please try again.";
-        title = "Error getting Schedules";
+        console.log(error);
+        var msg = "I'm sorry, you did not specify a valid " + error.field + ".  Please try again.";
+        var title = "Error getting Schedules";
 
+        callback(session.attributes,
+            buildSpeechletResponse(title, msg, "", "true"));
+    }).catch(function(error) {
+        console.log(error)
+         callback(session.attributes,
+            buildSpeechletResponse(error, "it broke", "", "true"));
     });
+}
 
-    callback(session.attributes,
-        buildSpeechletResponse(title, msg, "", "true"));
+function isAmazonIntent(intentName) {
+  switch(intentName) {
+    case "AMAZON.HelpIntent":
+    case "AMAZON.StopIntent":
+    case "AMAZON.CancelIntent":
+      return true;
+    default:
+      return false;
+  }
 }
 
 function getCallPromise(intent) {
   var intentName = intent.name,
-      theCall = null,
       STATIC_CLASS = "Power";
 
   switch (intentName) {
     case "GetAllSchedulesToday":
-      theCall = api.getTodaysSchedules(STATIC_CLASS);
-      break;
+      return api.getTodaysSchedules(STATIC_CLASS);
     case "GetSchedulesLocationToday":
-      theCall = api.getTodaysScheduleByLocation(STATIC_CLASS, intent.slots.Gym.value);
-      break;
+      return api.getTodaysScheduleByLocation(STATIC_CLASS, intent.slots.Gym.value);
     case "GetAllSchedules":
-      theCall = api.getAllSchedules(intent.slots.Date.value, STATIC_CLASS);
-      break;
+      return api.getAllSchedules(intent.slots.Date.value, STATIC_CLASS);
     case "GetSchedulesLocation":
-      theCall = api.getScheduleByLocation(intent.slots.Date.value, STATIC_CLASS, intent.slots.Gym.value);
+      return api.getScheduleByLocation(intent.slots.Date.value, STATIC_CLASS, intent.slots.Gym.value);
     default:
-      console.log(intent);
+      console.log("Invalid intent: " + intent);
       throw "Invalid intent";
   }
-
-  return theCall;
 }
 
 function processClassList(day, className, classes) {
-    var buffer = "On " + day + " there ";
+    var buffer = day;
+
+    buffer += " there ";
+
     if (classes.length === 0) {
       buffer += "are no classes";
     } else if (classes.length === 1) {
