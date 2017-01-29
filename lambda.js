@@ -13,7 +13,7 @@ exports.handler = function (event, context) {
          * prevent someone else from configuring a skill that sends requests to this function.
          */
 
-//     if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app.05aecccb3-1461-48fb-a008-822ddrt6b516") {
+//     if (event.session.application.applicationId !== "amzn1.ask.skill.caabd54f-c137-4a09-a704-7e243da5bedc") {
 //         context.fail("Invalid Application ID");
 //      }
 
@@ -60,9 +60,9 @@ function onLaunch(launchRequest, session, callback) {
         + ", sessionId=" + session.sessionId);
 
       var cardTitle = "Schedule Help"
-      var speechOutput = "Welcome to amfanfit.  You can ask for schedules at locations, or for schedules on dates."
+      var speechOutput = "Welcome to gym class helper.  You can ask for class schedules by locations, or for class schedules on a date. How may I assist you today?"
       callback(session.attributes,
-           buildSpeechletResponse(cardTitle, speechOutput, "You can ask for schedules at locations, or for schedules on dates.", false));
+           buildSpeechletResponse(cardTitle, speechOutput, "How may I assist you today?", false));
 }
 
 /**
@@ -76,11 +76,11 @@ function onIntent(intentRequest, session, callback) {
       var title, output, exit = true;
       if ("AMAZON.HelpIntent" == intent.name) {
         title = "Help";
-        output = "Ask 'for today's schedule at Gym Name' or 'what is the schedule for Thursday'";
+        output = "You can say the follow commands.  What is today's schedule?.  What is the schedule on Friday?.  What is the schedule at Short Pump on Monday?  Cancel or stop to exit.";
         exit = false;
       } else {
         title = "Goodbye";
-        output = "Thank you for using Amfanfit today";
+        output = "Thank you for using gym class helper.";
       }
       callback(session.attributes,
           buildSpeechletResponse(title, output, "", "" + exit));
