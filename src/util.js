@@ -1,5 +1,5 @@
 var cheerio = require('cheerio');
-var config = require('./config.json');
+var config = require('./resources/config.json');
 
 var sort = function(a, b) {
   var timeA = a.time.split(' ');

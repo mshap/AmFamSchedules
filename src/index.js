@@ -1,4 +1,4 @@
-var api = require('./api');
+var api = require('./amfam/api');
 
 var day = process.argv[2];
 var classType = process.argv[3];
